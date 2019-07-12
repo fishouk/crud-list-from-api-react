@@ -1,6 +1,9 @@
-import {Row, Col, Container, ListGroup, Form, InputGroup, FormControl, Button} from 'react-bootstrap';
-import React, {Component} from 'react';
 import './App.css';
+import {Row, Col, Container} from 'react-bootstrap';
+import React, {Component} from 'react';
+import ListSearch from './ListSearch';
+import AddNewItem from './AddNewItem';
+import ShowList from './ShowList';
 
 const apiUrl = 'https://jsonplaceholder.typicode.com/users';
 
@@ -38,15 +41,9 @@ class App extends Component {
       });
     }
 
-    showAddInput = () => {      
+    updateAddInputStatus = (arg) => {      
       this.setState({        
-        showAddForm: true
-      });
-    }
-
-    hideAddInput = () => {      
-      this.setState({        
-        showAddForm: false
+        showAddForm: arg
       });
     }
 
@@ -78,9 +75,10 @@ class App extends Component {
     }
 
     updateShowEditStatus = (item, arg) => {
-      let i = this.state.data.findIndex(x => x === item);
-      this.state.data[i].showEditForm = arg;
-      this.forceUpdate()
+      const i = this.state.data.findIndex(x => x === item);      
+      const newItems =  [...this.state.data];
+      newItems[i].showEditForm = arg;
+      this.setState({data: newItems});
     }
 
     showEdit = (item) => {this.updateShowEditStatus(item, true)}
@@ -93,18 +91,19 @@ class App extends Component {
     }
     editItem = (item) => {
       let i = this.state.data.findIndex(x => x === item);
-      this.state.data[i].name = this.state.editedItemText;
-      this.state.data[i].showEditForm = false;
-      this.forceUpdate()
+      const newItems =  [...this.state.data];
+      newItems[i].name = this.state.editedItemText;
+      this.setState({data: newItems});
+      this.updateShowEditStatus(item, false);
     }
 
     render() {
-      const { isLoading, error, showAddForm, editedItemText} = this.state;
-      let { data, searchString} = this.state;
-      let newItemText = this.state.newItemText.name;
+      const { isLoading, error, showAddForm, editedItemText, searchString} = this.state;
+      let { data } = this.state;
+      const { newItemText } = this.state.newItemText.name;
 
       if (searchString.length > 0) {
-          data = data.filter(function(data) {
+          data = data.filter(data => {
           return data.name.toLowerCase().match(searchString);
         });
       }      
@@ -118,81 +117,22 @@ class App extends Component {
                 <h1>Get list of names by api with react app</h1>
               </Col>
             </Row>
-            <Row>
-              <Col>
-                <Form>
-                  <Form.Group>
-                    <Form.Label>Поиск</Form.Label>
-                    <InputGroup className="mb-3">
-                      <InputGroup.Prepend>
-                        <InputGroup.Text id="basic-addon1">Search</InputGroup.Text>
-                      </InputGroup.Prepend>
-                      <FormControl                        
-                        placeholder="Начните печатать"
-                        onChange={this.formListOfNamesSearch}
-                      />
-                    </InputGroup>
-                  </Form.Group>
-                </Form>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                { !showAddForm ? (<Button variant="success" onClick={this.showAddInput}>Добавить новый</Button>) : (
-                  <Form onSubmit={this.addNewItem}>
-                    <Row>
-                      <Col sm={8}>
-                        <Form.Control type="text" value={newItemText} onChange={this.handleAddNewItem} placeholder="Введите данные" required/> 
-                      </Col>
-                      <Col sm={2}>
-                        <Button variant="success" type="submit">Сохранить</Button> 
-                      </Col>
-                      <Col sm={2}>
-                        <Button variant="danger" onClick={this.hideAddInput}>Назад</Button>
-                      </Col>
-                    </Row>
-                  </Form>
-                )}
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-              {error ? <p>{error.message}</p> : null}
-              {!isLoading ? (
-                <ListGroup variant="flush">
-                  {data.map(hit => {
-                      if(!hit.showEditForm) { 
-                        return(                                                 
-                          <ListGroup.Item key={hit.name}>
-                            {hit.name}
-                            <Button variant="danger" size="sm" className="float-right" onClick={()=>{this.deleteListItem(hit)}}>Удалить</Button>
-                            <Button variant="warning" size="sm" className="float-right" onClick={()=>{this.showEdit(hit)}}>Редактировать</Button>
-                          </ListGroup.Item>                                             
-                        );
-                      } else {
-                        return(                                                 
-                          <ListGroup.Item key={hit.name}>     
-                            <Row>
-                              <Col sm={10}>                      
-                                <Form.Control type="text" value={this.editedItemText} onChange={this.handleEditItem} placeholder={hit.name} required/>
-                              </Col>
-                              <Col sm={1}>   
-                                <Button variant="success" size="sm" className="float-right" onClick={()=>{this.editItem(hit)}}>Сохранить</Button>
-                              </Col>
-                              <Col sm={1}>  
-                                <Button variant="warning" size="sm" className="float-right" onClick={()=>{this.hideEdit(hit)}}>Назад</Button>
-                                </Col>
-                            </Row>
-                          </ListGroup.Item>                                             
-                        );
-                      }
-                    })
-                  }
-                </ListGroup>
-                ) : (
-                <p>Loading ...</p>)}
-              </Col>
-            </Row>
+            <ListSearch formListOfNamesSearch={this.formListOfNamesSearch} />
+            <AddNewItem showAddForm={showAddForm} 
+                        updateAddInputStatus={this.updateAddInputStatus} 
+                        addNewItem={this.addNewItem}
+                        newItemText={newItemText}
+                        handleAddNewItem={this.handleAddNewItem}
+                        updateAddInputStatus={this.updateAddInputStatus} />
+            <ShowList error={error}
+                      isLoading={isLoading}
+                      data={data}
+                      deleteListItem={this.deleteListItem}
+                      showEdit={this.showEdit}
+                      editedItemText={this.editedItemText}
+                      handleEditItem={this.handleEditItem}
+                      editItem={this.editItem}
+                      hideEdit={this.hideEdit} />
           </Container>
       );  
     }
