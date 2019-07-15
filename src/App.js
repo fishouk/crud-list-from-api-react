@@ -13,9 +13,7 @@ class App extends Component {
       searchString: "",
       data: [],      
       isLoading: false,
-      error: null,
-      showAddForm: false,
-      newItemText: { name: ''},
+      error: null,      
       editedItemText: '',
     };
 
@@ -41,32 +39,16 @@ class App extends Component {
       });
     }
 
-    updateAddInputStatus = (arg) => {      
-      this.setState({        
-        showAddForm: arg
-      });
-    }
-
-    handleAddNewItem = event => {
-      this.setState({        
-        newItemText: {
-          name: event.target.value
-        }
-      });
-    }
-
-    addNewItem = event => {
-      if (this.state.newItemText) {
+    addNewItem = (newName) => { 
+      let {data} = this.state;
+      console.log(newName);
+      if (newName) {
         this.setState({        
-          data: this.state.data.concat(this.state.newItemText),
-          showAddForm: false,
-          newItemText: {
-            name: ''
-          }
+          data: data.concat(newName),
         });
       } 
-      event.preventDefault();
-    }
+      console.log(data);
+    }  
 
     deleteListItem = item => {   
       this.setState(prevState => ({
@@ -100,15 +82,14 @@ class App extends Component {
     render() {
       const { isLoading, error, showAddForm, editedItemText, searchString} = this.state;
       let { data } = this.state;
-      const { newItemText } = this.state.newItemText.name;
-
+      
       if (searchString.length > 0) {
           data = data.filter(data => {
           return data.name.toLowerCase().match(searchString);
         });
       }      
 
-      console.log(data);
+      //console.log(data);
 
       return (    
           <Container>
@@ -118,12 +99,7 @@ class App extends Component {
               </Col>
             </Row>
             <ListSearch formListOfNamesSearch={this.formListOfNamesSearch} />
-            <AddNewItem showAddForm={showAddForm} 
-                        updateAddInputStatus={this.updateAddInputStatus} 
-                        addNewItem={this.addNewItem}
-                        newItemText={newItemText}
-                        handleAddNewItem={this.handleAddNewItem}
-                        updateAddInputStatus={this.updateAddInputStatus} />
+            <AddNewItem addNewItem={this.addNewItem} />
             <ShowList error={error}
                       isLoading={isLoading}
                       data={data}
