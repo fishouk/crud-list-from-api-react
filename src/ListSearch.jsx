@@ -6,20 +6,20 @@ class ListSearch extends React.Component {
     return (
         <Row>
             <Col>
-            <Form>
-                <Form.Group>
-                <Form.Label>Поиск</Form.Label>
-                <InputGroup className="mb-3">
-                    <InputGroup.Prepend>
-                    <InputGroup.Text id="basic-addon1">Search</InputGroup.Text>
-                    </InputGroup.Prepend>
-                    <FormControl                        
-                    placeholder="Начните печатать"
-                    onChange={this.props.formListOfNamesSearch}
-                    />
-                </InputGroup>
-                </Form.Group>
-            </Form>
+              <Form>
+                  <Form.Group>
+                    <Form.Label>Поиск</Form.Label>
+                    <InputGroup className="mb-3">
+                        <InputGroup.Prepend>
+                        <InputGroup.Text id="basic-addon1">Search</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <FormControl                        
+                        placeholder="Начните печатать"
+                        onChange={this.props.formListOfNamesSearch}
+                        />
+                    </InputGroup>
+                  </Form.Group>
+              </Form>
             </Col>
         </Row>
     );

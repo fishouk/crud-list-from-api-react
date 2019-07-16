@@ -2,7 +2,7 @@ import './App.css';
 import {Row, Col, Container} from 'react-bootstrap';
 import React, {Component} from 'react';
 import ListSearch from './ListSearch';
-import AddNewItem from './AddNewItem';
+import AddUser from './AddUser';
 import ShowList from './ShowList';
 
 const apiUrl = 'https://jsonplaceholder.typicode.com/users';
@@ -11,7 +11,7 @@ class App extends Component {
 
     state = {
       searchString: "",
-      data: [],      
+      users: [],      
       isLoading: false,
       error: null,      
       editedItemText: '',
@@ -28,8 +28,7 @@ class App extends Component {
             throw new Error('Something went wrong ...');
           }
         })
-        .then(data => this.setState({ data: data, isLoading: false }))
-        .then(() => this.state.data.forEach((el) => { el.showEditForm = false; }))
+        .then(users => this.setState({ users: users, isLoading: false }))
         .catch(error => this.setState({ error, isLoading: false }));
     }
   
@@ -40,56 +39,40 @@ class App extends Component {
     }
 
     addNewItem = (newName) => { 
-      let {data} = this.state;
-      console.log(newName);
+      let { users } = this.state;
       if (newName) {
         this.setState({        
-          data: data.concat(newName),
+          users: users.concat(newName),
         });
       } 
-      console.log(data);
     }  
 
-    deleteListItem = item => {   
+    deleteUser = user => {   
+      let { users } = this.state;
       this.setState(prevState => ({
-        data: this.state.data.filter(el => el !== item )
+        users: users.filter(el => el !== user )
       }));
     }
-
-    updateShowEditStatus = (item, arg) => {
-      const i = this.state.data.findIndex(x => x === item);      
-      const newItems =  [...this.state.data];
-      newItems[i].showEditForm = arg;
-      this.setState({data: newItems});
-    }
-
-    showEdit = (item) => {this.updateShowEditStatus(item, true)}
-    hideEdit = (item) => {this.updateShowEditStatus(item, false)}
-
-    handleEditItem = event => { 
-      this.setState({  
-        editedItemText: event.target.value
-      });
-    }
-    editItem = (item) => {
-      let i = this.state.data.findIndex(x => x === item);
-      const newItems =  [...this.state.data];
-      newItems[i].name = this.state.editedItemText;
-      this.setState({data: newItems});
-      this.updateShowEditStatus(item, false);
+    
+    editUser = (user, newName) => {
+      let { users } = this.state;
+      let i = users.findIndex(x => x === user);
+      const newUsers =  [...users];
+      newUsers[i].name = newName;
+      this.setState({users: newUsers});
     }
 
     render() {
-      const { isLoading, error, showAddForm, editedItemText, searchString} = this.state;
-      let { data } = this.state;
+      const { isLoading, error, editedItemText, searchString} = this.state;
+      let { users } = this.state;
       
       if (searchString.length > 0) {
-          data = data.filter(data => {
-          return data.name.toLowerCase().match(searchString);
+        users = users.filter(users => {
+          return users.name.toLowerCase().match(searchString);
         });
       }      
 
-      //console.log(data);
+      console.log(users);
 
       return (    
           <Container>
@@ -99,16 +82,16 @@ class App extends Component {
               </Col>
             </Row>
             <ListSearch formListOfNamesSearch={this.formListOfNamesSearch} />
-            <AddNewItem addNewItem={this.addNewItem} />
-            <ShowList error={error}
-                      isLoading={isLoading}
-                      data={data}
-                      deleteListItem={this.deleteListItem}
-                      showEdit={this.showEdit}
-                      editedItemText={this.editedItemText}
-                      handleEditItem={this.handleEditItem}
-                      editItem={this.editItem}
-                      hideEdit={this.hideEdit} />
+            <AddUser addNewItem={this.addNewItem} />
+            <Row>
+              <Col>
+              {error ? <p>{error.message}</p> : null}
+              {!isLoading ? (
+                <ShowList users={users} deleteUser={this.deleteUser} editUser={this.editUser} />
+              ) : (
+                <p>Loading ...</p>)}
+              </Col>
+            </Row>
           </Container>
       );  
     }
