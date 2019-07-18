@@ -6,7 +6,7 @@ class EditFormUser extends React.Component {
         newUserName: '',
     };
 
-    handleEditUserName = event => { 
+    handleEditUserName = event => {         
         this.setState({  
             newUserName: event.target.value
         });
@@ -21,13 +21,12 @@ class EditFormUser extends React.Component {
 
   render() {
     let { newUserName } = this.state;
-    let { user } = this.props;
-        
+    const { user } = this.props;
     return (
         <ListGroup.Item>     
             <Row>
                 <Col sm={10}>                      
-                    <Form.Control type="text" value={newUserName} onChange={this.handleEditUserName} placeholder={user.name} required/>
+                    <Form.Control type="text" defaultValue={user.name} onChange={this.handleEditUserName} placeholder={!newUserName ? "Введите имя" : newUserName} required/>
                 </Col>
                 <Col sm={1}>   
                     <Button variant="success" size="sm" className="float-right" onClick={()=>{this.editUserAndHideForm(user)}}>Сохранить</Button>

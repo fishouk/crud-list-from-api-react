@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 import ListSearch from './ListSearch';
 import AddUser from './AddUser';
 import ShowList from './ShowList';
+import Preload from './Preload';
 
 const apiUrl = 'https://jsonplaceholder.typicode.com/users';
 
@@ -84,12 +85,10 @@ class App extends Component {
             <ListSearch formListOfNamesSearch={this.formListOfNamesSearch} />
             <AddUser addNewItem={this.addNewItem} />
             <Row>
-              <Col>
-              {error ? <p>{error.message}</p> : null}
-              {!isLoading ? (
-                <ShowList users={users} deleteUser={this.deleteUser} editUser={this.editUser} />
-              ) : (
-                <p>Loading ...</p>)}
+              <Col>                
+                <Preload isLoading={isLoading} error={error}>
+                  <ShowList users={users} deleteUser={this.deleteUser} editUser={this.editUser} />
+                </Preload>
               </Col>
             </Row>
           </Container>
