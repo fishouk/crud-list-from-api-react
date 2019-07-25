@@ -5,13 +5,13 @@ import UserRow from "./UserRow";
 
 class ShowList extends React.Component {
   render() {
-    let { users } = this.props;
+    let { users, deleteUser, editUser } = this.props;
     
     return (
         <ListGroup variant="flush">
             {users.map(user => 
-              <React.Fragment key={user.name} >
-                <UserRow user={user} deleteUser={this.props.deleteUser} editUser={this.props.editUser} />
+              <React.Fragment key={user.id} >
+                <UserRow user={user} deleteUser={deleteUser} editUser={editUser} />
               </React.Fragment>
             )}
         </ListGroup>

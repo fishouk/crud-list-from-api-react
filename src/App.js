@@ -14,8 +14,7 @@ class App extends Component {
       searchString: "",
       users: [],      
       isLoading: false,
-      error: null,      
-      editedItemText: '',
+      error: null,
     };
 
     componentDidMount() {
@@ -39,11 +38,11 @@ class App extends Component {
       });
     }
 
-    addNewItem = (newName) => { 
+    addNewItem = (newUser) => { 
       let { users } = this.state;
-      if (newName) {
+      if (newUser) {
         this.setState({        
-          users: users.concat(newName),
+          users: users.concat(newUser),
         });
       } 
     }  
@@ -64,7 +63,7 @@ class App extends Component {
     }
 
     render() {
-      const { isLoading, error, editedItemText, searchString} = this.state;
+      const { isLoading, error, searchString} = this.state;
       let { users } = this.state;
       
       if (searchString.length > 0) {
@@ -83,7 +82,7 @@ class App extends Component {
               </Col>
             </Row>
             <ListSearch formListOfNamesSearch={this.formListOfNamesSearch} />
-            <AddUser addNewItem={this.addNewItem} />
+            <AddUser addNewItem={this.addNewItem} users={users} />
             <Row>
               <Col>                
                 <Preload isLoading={isLoading} error={error}>

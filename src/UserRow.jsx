@@ -16,17 +16,14 @@ class UserRow extends React.Component {
 
   render() {
     let { showEditForm } = this.state;
-    let { user } = this.props;
+    let { user, deleteUser, editUser} = this.props;
 
-    return (
-        <React.Fragment>
-            {!showEditForm ? (  
-                <EditDeleteUser user={user} toggleShowEditStatus={this.toggleShowEditStatus} deleteUser={this.props.deleteUser} />        
-            ) : (
-                <EditFormUser user={user} toggleShowEditStatus={this.toggleShowEditStatus} editUser={this.props.editUser} />
-            )}
-        </React.Fragment>
-    );
+    if(!showEditForm) {
+        return <EditDeleteUser user={user} toggleShowEditStatus={this.toggleShowEditStatus} deleteUser={deleteUser} />        
+    } else {
+        return <EditFormUser user={user} toggleShowEditStatus={this.toggleShowEditStatus} editUser={editUser} />
+    }
+
   }
 }
 

@@ -4,12 +4,12 @@ import {ListGroup, Button} from 'react-bootstrap';
 class EditDeleteUser extends React.Component {
   
   render() {
-    let { user } = this.props;
+    let { deleteUser, toggleShowEditStatus, user } = this.props;
     return (                                                                  
         <ListGroup.Item>
             {user.name}
-            <Button variant="danger" size="sm" className="float-right" onClick={()=>{this.props.deleteUser(user)}}>Удалить</Button>
-            <Button variant="warning" size="sm" className="float-right" onClick={()=>{this.props.toggleShowEditStatus()}}>Редактировать</Button>
+            <Button variant="danger" size="sm" className="float-right" onClick={()=>{deleteUser(user)}}>Удалить</Button>
+            <Button variant="warning" size="sm" className="float-right" onClick={()=>{toggleShowEditStatus()}}>Редактировать</Button>
         </ListGroup.Item>             
     );
   }

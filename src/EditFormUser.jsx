@@ -14,14 +14,15 @@ class EditFormUser extends React.Component {
 
     editUserAndHideForm(user) {
         const { newUserName } = this.state;
+        const { editUser, toggleShowEditStatus } = this.props;
 
-        this.props.editUser(user, newUserName);
-        this.props.toggleShowEditStatus();
+        editUser(user, newUserName);
+        toggleShowEditStatus();
     }
 
   render() {
     let { newUserName } = this.state;
-    const { user } = this.props;
+    const { user, toggleShowEditStatus } = this.props;
     return (
         <ListGroup.Item>     
             <Row>
@@ -32,7 +33,7 @@ class EditFormUser extends React.Component {
                     <Button variant="success" size="sm" className="float-right" onClick={()=>{this.editUserAndHideForm(user)}}>Сохранить</Button>
                 </Col>
                 <Col sm={1}>  
-                    <Button variant="warning" size="sm" className="float-right" onClick={()=>{this.props.toggleShowEditStatus()}}>Назад</Button>
+                    <Button variant="warning" size="sm" className="float-right" onClick={()=>{toggleShowEditStatus()}}>Назад</Button>
                 </Col>
             </Row>
         </ListGroup.Item>

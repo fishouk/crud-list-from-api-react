@@ -8,11 +8,17 @@ class AddUser extends React.Component {
   }
 
   addNewItem = event => {
-    let { newItem } = this.state; 
-    this.props.addNewItem(newItem);
+    let { newItem } = this.state;     
+    const { users, addNewItem } = this.props;
+    if (users.length > 0) {
+      const lastUser = users[users.length - 1];
+      const idForNewUser = lastUser.id + 1;
+      newItem.id = idForNewUser;       
+    }    
+    addNewItem(newItem);
     event.preventDefault();
     this.setState({        
-      newItem: {
+      newItem: {    
         name: ''
       },
       showAddForm: false,
@@ -22,11 +28,13 @@ class AddUser extends React.Component {
   handleChangeTextOfNewItem = event => {
     this.setState({        
       newItem: {
+        id: 1,
         name: event.target.value
       }      
     });
   }
-  toggleAddInputStatus = (ag) => { 
+
+  toggleAddInputStatus = () => { 
     let { showAddForm } = this.state;     
     this.setState({        
       showAddForm: !showAddForm
