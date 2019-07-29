@@ -1,35 +1,21 @@
 import './App.css';
-import {Row, Col, Container} from 'react-bootstrap';
+import {Row, Col} from 'react-bootstrap';
 import React, {Component} from 'react';
 import ListSearch from './ListSearch';
 import AddUser from './AddUser';
 import ShowList from './ShowList';
 import Preload from './Preload';
 
-const apiUrl = 'https://jsonplaceholder.typicode.com/users';
-
 class UsersApp extends Component { 
 
     state = {
       searchString: "",
       users: [],      
-      isLoading: false,
-      error: null,
     };
 
     componentDidMount() {
-      this.setState({ isLoading: true });
-
-      fetch(apiUrl)
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Something went wrong ...');
-          }
-        })
-        .then(users => this.setState({ users: users, isLoading: false }))
-        .catch(error => this.setState({ error, isLoading: false }));
+      let {users} = this.props;
+      this.setState({ users: users });
     }
   
     formListOfNamesSearch = event => {      
@@ -63,7 +49,8 @@ class UsersApp extends Component {
     }
 
     render() {
-      const { isLoading, error, searchString} = this.state;
+      const { searchString} = this.state;
+      const { isLoading, error} = this.props;
       let { users } = this.state;
       
       if (searchString.length > 0) {
@@ -75,8 +62,7 @@ class UsersApp extends Component {
       console.log(users);
 
       return (    
-          <Container>
-            
+          <React.Fragment>
             <Row>
               <Col>
                 <h1>Get list of names by api with react app</h1>
@@ -86,12 +72,12 @@ class UsersApp extends Component {
             <AddUser addNewItem={this.addNewItem} users={users} />
             <Row>
               <Col>                
-                <Preload isLoading={isLoading} error={error}>
+                <Preload isLoading={isLoading} error={error}>  
                   <ShowList users={users} deleteUser={this.deleteUser} editUser={this.editUser} />
-                </Preload>
+                </Preload> 
               </Col>
             </Row>
-          </Container>
+          </React.Fragment>
       );  
     }
 }

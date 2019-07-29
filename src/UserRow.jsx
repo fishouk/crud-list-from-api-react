@@ -1,5 +1,5 @@
 import React from "react";
-import EditDeleteUser from './EditDeleteUser';
+import UserControls from './UserControls';
 import EditFormUser from './EditFormUser';
 
 class UserRow extends React.Component {
@@ -19,7 +19,7 @@ class UserRow extends React.Component {
     let { user, deleteUser, editUser} = this.props;
 
     if(!showEditForm) {
-        return <EditDeleteUser user={user} toggleShowEditStatus={this.toggleShowEditStatus} deleteUser={deleteUser} />        
+        return <UserControls user={user} toggleShowEditStatus={this.toggleShowEditStatus} deleteUser={deleteUser} />        
     } else {
         return <EditFormUser user={user} toggleShowEditStatus={this.toggleShowEditStatus} editUser={editUser} />
     }
