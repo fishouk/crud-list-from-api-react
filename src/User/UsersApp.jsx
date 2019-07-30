@@ -1,9 +1,8 @@
-
 import {Row, Col} from 'react-bootstrap';
 import React, {Component} from 'react';
 import ListSearch from './ListSearch';
 import AddUser from './AddUser';
-import ShowList from './User/ShowList';
+import ShowList from './ShowList';
 import Preload from '../Components/Preload';
 
 class UsersApp extends Component { 

@@ -2,10 +2,10 @@ import './App.css';
 import React, {Component} from 'react';
 import { Container } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
-import UsersApp from './UsersApp';
-import EditUser from './EditUser';
-import Error404 from './Error404';
-import Preload from './Preload';
+import UsersApp from './User/UsersApp';
+import UserAppContainer from './User/UserAppContainer';
+import Error404 from './Components/Error404';
+import Preload from './Components/Preload';
 
 const apiUrl = 'https://jsonplaceholder.typicode.com/users';
 
@@ -40,20 +40,7 @@ class App extends Component {
             <Router>
               <Switch>     
                 <Route exact path="/"  component={() => <UsersApp users={users} isLoading={isLoading} error={error} />} /> 
-                <Route
-                    path="/edit-user/:id"
-                    render={props => (
-                      <EditUser
-                        user={
-                          this.state.users.filter(
-                            user =>
-                              user.id === parseInt(props.match.params.id, 10)
-                          )[0]
-                        }
-                        {...props}
-                      />
-                    )}
-                  />
+                <UserAppContainer users={users}/>
                 <Route component={Error404} />
               </Switch>        
             </Router>
