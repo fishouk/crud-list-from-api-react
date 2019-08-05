@@ -5,24 +5,15 @@ import EditUser from './EditUser';
 class UserAppContainer extends Component { 
     
     render() {
-      let { users } = this.props;
-      
-      return (          
-        <Route
-            path="/edit-user/:id"
-            render={props => (
-                <EditUser
-                user={
-                    users.find(
+      let { users, userId } = this.props;
+
+      const user = users.find(
                     user =>
-                        user.id === parseInt(props.match.params.id, 10)
-                    )
-                }
-                {...props}
-                />
-            )}
-            />
-      );  
+                        user.id === userId
+                    );
+
+     
+      return <EditUser user={user}/>
     }
 }
 

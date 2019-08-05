@@ -40,7 +40,13 @@ class App extends Component {
             <Router>
               <Switch>     
                 <Route exact path="/"  component={() => <UsersApp users={users} isLoading={isLoading} error={error} />} /> 
-                <UserAppContainer users={users}/>
+                <Route
+                  path="/edit-user/:id"
+                  render={props => (
+                      <UserAppContainer users={users} userId={parseInt(props.match.params.id, 10)} {...props}
+                      />
+                  )}
+                />
                 <Route component={Error404} />
               </Switch>        
             </Router>
