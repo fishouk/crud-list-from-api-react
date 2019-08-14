@@ -6,13 +6,20 @@ function fetchUsers() {
     return dispatch => {
         dispatch(fetchUsersPending());
         fetch(apiUrl)
-        .then(res => res.json())
         .then(res => {
-            console.log(res);
+            if (res.ok) {
+              return res.json();
+            } else {
+              throw new Error('Something went wrong');
+            }
+          }
+        )
+        .then(res => {            
             dispatch(fetchUsersSuccess(res));
             return res;
         })
         .catch(error => {
+            console.log(error);
             dispatch(fetchUsersError(error));
         })
     }

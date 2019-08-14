@@ -6,12 +6,8 @@ class UserAppContainer extends Component {
     render() {
       let { users, userId } = this.props;
 
-      const user = users.find(
-                    user =>
-                        user.id === userId
-                    );
-
-     
+      const user = users.find( user => user.id === userId );
+      
       return <EditUser user={user}/>
     }
 }

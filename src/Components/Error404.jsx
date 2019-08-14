@@ -4,7 +4,7 @@ import {Row, Col} from 'react-bootstrap';
 class Error404 extends React.Component {
 
   render() {
-      return (
+    return (
         <Row>
           <Col> 
             <h1>404! Такой страницы нет!</h1>

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import fetchUsers from './actions/fetchUsers';
-import {getUsersError, getUsers, getUsersPending} from './reducers/users';
+import {getUsersError, getUsers, getUsersPending} from './reducers/index';
 
 import { Container } from 'react-bootstrap';
 
@@ -21,43 +21,29 @@ class App extends Component {
 
     componentDidMount() {
         const {fetchUsers} = this.props;
-        const {isLoding} = this.props;
-        console.log('11111111111111111111111111111111111111111111');
-        console.log(this.props);
-        console.log('11111111111111111111111111111111111111111111');
-        //fetchUsers();
+        fetchUsers();
     }
-
-    // shouldComponentRender() {
-    //     const {isLoding} = this.props;
-    //     if(this.isLoding === false) return false;
-    //     // more tests
-    //     return true;
-    // }
 
     render() {
       let { users, error, isLoading } = this.props;
-      console.log('22222222222222222222222222222222222');
-      console.log(this.props);
-      console.log('222222222222222222222222222222222222');
-      return (  true
-        // <Container>
-        //   <Preload isLoading={isLoading} error={error}>    
-        //     <Router>
-        //       <Switch>     
-        //         <Route exact path="/"  component={() => <UsersApp users={users} isLoading={isLoading} error={error} />} /> 
-        //         <Route
-        //           path="/edit-user/:id"
-        //           render={props => (
-        //               <UserAppContainer users={users} userId={parseInt(props.match.params.id, 10)} {...props}
-        //               />
-        //           )}
-        //         />
-        //         <Route component={Error404} />
-        //       </Switch>        
-        //     </Router>
-        //   </Preload>   
-        // </Container> 
+      return ( 
+        <Container>
+          <Preload isLoading={isLoading} error={error}>    
+            <Router>
+              <Switch>     
+                <Route exact path="/"  component={() => <UsersApp users={users} isLoading={isLoading} error={error} />} /> 
+                <Route
+                  path="/edit-user/:id"
+                  render={props => (
+                      <UserAppContainer users={users} userId={parseInt(props.match.params.id, 10)} {...props}
+                      />
+                  )}
+                />
+                <Route component={Error404} />
+              </Switch>        
+            </Router>
+          </Preload>   
+        </Container> 
       );  
     }
 }
