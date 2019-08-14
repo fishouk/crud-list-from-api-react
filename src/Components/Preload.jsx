@@ -1,7 +1,13 @@
 import React from "react";
+import { connect } from 'react-redux';
+import {getUsersError, getUsersPending} from '../reducers/index';
 
 class Preload extends React.Component {
     
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     const { error, isLoading, children } = this.props;
 
@@ -15,4 +21,9 @@ class Preload extends React.Component {
   }
 }
 
-export default Preload;
+const mapStateToProps = state => ({
+  error: getUsersError(state),
+  isLoading: getUsersPending(state)
+})
+
+export default connect(mapStateToProps)(Preload);

@@ -14,10 +14,11 @@ import UserAppContainer from './User/UserAppContainer';
 import Error404 from './Components/Error404';
 import Preload from './Components/Preload';
 
+
 class App extends Component { 
     constructor(props) {
       super(props);
-    }
+    }    
 
     componentDidMount() {
         const {fetchUsers} = this.props;
@@ -28,7 +29,7 @@ class App extends Component {
       let { users, error, isLoading } = this.props;
       return ( 
         <Container>
-          <Preload isLoading={isLoading} error={error}>    
+          <Preload>    
             <Router>
               <Switch>     
                 <Route exact path="/"  component={() => <UsersApp users={users} isLoading={isLoading} error={error} />} /> 
@@ -48,10 +49,9 @@ class App extends Component {
     }
 }
 
+
 const mapStateToProps = state => ({
-  error: getUsersError(state),
-  users: getUsers(state),
-  isLoading: getUsersPending(state)
+  users: getUsers(state)
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
